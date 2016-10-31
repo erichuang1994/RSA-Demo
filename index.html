@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<link rel="stylesheet" type="text/css" href="ui.css">
+</head>
+<body>
+  <div id="container">
+    input
+    <br>
+    <textarea  id="input" rows="25" cols="90"></textarea>
+    <div>
+      Read binary from file:<input type="file" id="fileInput">
+      <button onclick=CBCEncryption()>encrypt</button>
+      <button onclick=CBCDecryption()>decrypt</button>
+      <input type="text" placeholder="key" id="key">
+    </div>
+    output
+    <br>
+    <textarea  id="cipher" rows="25" cols="90"></textarea>
+  </div>
+</body>
+<script src="utils.js"></script>
+<script src="funcs.js"></script>
+</html>
+<script>
+window.onload = function() {
+       var fileInput = document.getElementById('fileInput');
+       var fileDisplayArea = document.getElementById('input');
+
+       fileInput.addEventListener('change', function(e) {
+           var file = fileInput.files[0];
+           var textType = /text.*/;
+
+           if (file.type.match(textType)) {
+               var reader = new FileReader();
+
+               reader.onload = function(e) {
+                   fileDisplayArea.value = reader.result;
+                   console.log(reader.result);
+               }
+               reader.readAsText(file);
+           } else {
+               fileDisplayArea.innerText = "File not supported!"
+           }
+       });
+}
+
+</script>
