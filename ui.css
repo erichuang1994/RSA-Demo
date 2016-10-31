@@ -5,3 +5,10 @@
 #fileInput{
   width:180px;
 }
+#notice{
+  width:100%;text-align:center;
+  visibility:hidden;
+}
+#float{
+  float:left;
+}

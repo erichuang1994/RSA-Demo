@@ -109,6 +109,8 @@ function showresult(blocks){
     result+=blocks[i].join('');
   }
   document.getElementById("cipher").value = result;
+  document.getElementById("notice").style.visibility = "visible";
+  setTimeout(function(){document.getElementById("notice").style.visibility = "hidden";}, 2000);
 }
 function CBCEncryption(){
   var blocks = getInput();
