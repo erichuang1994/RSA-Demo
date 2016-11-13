@@ -79,13 +79,12 @@ function getKey(){
   }
   return ret;
 }
-function getInput(){
-  var input = document.getElementById("input").value.trim();
-  console.log("input is",input);
-  if(input.length%64!=0){
-    alert("input's length isn't in multiples of 64,will padding 0");
-  }
-  input = input.concat(Array((64-(input.length%64))%64).join("0"));
+var test;
+function bin2input(input){
+  // if(input.length%64!=0){
+  //   alert("input's length isn't in multiples of 64,will padding 0");
+  // }
+  input = Array(((64-(input.length%64))%64)+1).join("0").concat(input);
   var ret = [];
   for(var i = 0;i<input.length;i+=64){
     var tmp=[];
@@ -96,11 +95,19 @@ function getInput(){
         tmp[j]=0;
       }else{
         alert("input should be binary string!!!");
+        test = input;
+        console.log(input);
         throw("input invalid");
       }
     }
     ret.push(tmp);
   }
+  return ret;
+}
+function getInput(){
+  var input = document.getElementById("input").value.trim();
+  console.log("input is",input);
+  var ret = bin2input(input);
   return ret;
 }
 function showresult(blocks){
@@ -112,9 +119,7 @@ function showresult(blocks){
   document.getElementById("notice").style.visibility = "visible";
   setTimeout(function(){document.getElementById("notice").style.visibility = "hidden";}, 2000);
 }
-function CBCEncryption(){
-  var blocks = getInput();
-  var key = getKey();
+function CBCEncrypt(blocks, key){
   var result = [];
   var last ;
   last = blockCipher(blocks[0], key,ENCRYPTMODE);
@@ -123,12 +128,16 @@ function CBCEncryption(){
     result[i] = blockCipher(xor(blocks[i], last), key, ENCRYPTMODE);
     last = result[i].slice();
   }
-  console.log('result:', result);
-  showresult(result);
+  // console.log('result:', result);
+  return result;
 }
-function CBCDecryption(){
+function CBCEncryption(){
   var blocks = getInput();
   var key = getKey();
+  var result = CBCEncrypt(blocks, key);
+  showresult(result);
+}
+function CBCDecrypt(blocks, key){
   var result = [];
   for(var i = blocks.length-1;i>=0;--i){
     if(i){
@@ -137,7 +146,13 @@ function CBCDecryption(){
       result[i]=blockCipher(blocks[i], key, DECRYPTMODE);
     }
   }
-  console.log('result:', result);
+  // console.log('result:', result);
+  return result;
+}
+function CBCDecryption(){
+  var blocks = getInput();
+  var key = getKey();
+  var result = CBCDecrypt(blocks, key);
   showresult(result);
 }
 function str2array(str){

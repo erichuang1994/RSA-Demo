@@ -4,46 +4,47 @@
 <title>DES</title>
 <link rel="stylesheet" type="text/css" href="ui.css">
 </head>
-<body>
-  <div id="container">
-    input
-    <br>
-    <textarea  id="input" rows="25" cols="90"></textarea>
-    <div>
-      Read binary from file:<input type="file" id="fileInput">
-      <button onclick=CBCEncryption()>encrypt</button>
-      <button onclick=CBCDecryption()>decrypt</button>
-      <input type="text" placeholder="key" id="key">
+<body onClick='rng_seed_time();' onKeyPress='rng_seed_time();'>
+  <div class="container">
+    <button onclick=genRSA()>genRSAKey</button>
+    <p>n:<br><textarea  id="n" rows="3" cols="50"></textarea></p>
+    <p>e:<br><textarea  id="e" rows="1" cols="50"></textarea></p>
+    <p>d:<br><textarea  id="d" rows="3" cols="50"></textarea></p>
+    <p>des key:<br><textarea  id="des" rows="3" cols="50"></textarea></p>
+    <p><button onclick=encryptDES()>encrypt</button><br>
+      after des:<br><textarea  id="cdes" rows="3" cols="50"></textarea></p>
+  </div>
+  <div  class="container">
+    <div id="ms-board" class="ms-board">
     </div>
-    <span id="float">output</span>
+    <div>
+      <div class="sender-board">
+        alice
+        <br>
+        <button id="alice-send">send</button>
+        <input type="text" placeholder="message" id="alice-msg">
+      </div>
+      <div class="sender-board">
+        bob
+        <br>
+        <button id="bob-send">send</button>
+        <input type="text" placeholder="message" id="bob-msg">
+      </div>
+    </div>
     <div id="notice"><span>success</span></div>
-    <textarea  id="cipher" rows="25" cols="90"></textarea>
+  </div>
+  <div  class="container">
+    <p>binary encode(before des encrypt):<br><textarea  id="des-before" rows="3" cols="50"></textarea></p>
+    <p>des encrypt(after des encrypt):<br><textarea  id="des-after" rows="3" cols="50"></textarea></p>
   </div>
 </body>
 <script src="utils.js"></script>
+<script src="base64.js"></script>
 <script src="funcs.js"></script>
+<script src="jsbn.js"></script>
+<script src="jsbn2.js"></script>
+<script src="prng4.js"></script>
+<script src="rng.js"></script>
+<script src="rsa.js"></script>
+<script src="user.js"></script>
 </html>
-<script>
-window.onload = function() {
-       var fileInput = document.getElementById('fileInput');
-       var fileDisplayArea = document.getElementById('input');
-
-       fileInput.addEventListener('change', function(e) {
-           var file = fileInput.files[0];
-           var textType = /text.*/;
-
-           if (file.type.match(textType)) {
-               var reader = new FileReader();
-
-               reader.onload = function(e) {
-                   fileDisplayArea.value = reader.result;
-                   console.log(reader.result);
-               }
-               reader.readAsText(file);
-           } else {
-               fileDisplayArea.innerText = "File not supported!"
-           }
-       });
-}
-
-</script>
